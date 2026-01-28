@@ -1,12 +1,11 @@
 const Provider = require("../models/ProviderSchema");
 
-
 // Get all
 exports.providerslist = async (req, res) => {
   try {
     const data = await Provider.find()
 
-        .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 });
 
     res.json({ response: "successful", message: "", data: data });
   } catch (error) {
@@ -16,12 +15,18 @@ exports.providerslist = async (req, res) => {
 
 // Create provider profile (after auth)
 exports.createProfile = async (req, res) => {
-  const exists = await Provider.findOne({ email: req.body.email });
-  if (exists)
-    return res.status(400).json({ message: "Provider already exists" });
+  try {
+    const finalData = {
+      ...req.body,
+      ...req.savedFiles,
+    };
 
-  const provider = await Provider.create(req.body);
-  res.status(201).json(provider);
+    const result = await Provider.create(finalData);
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
 };
 
 // Update profile
@@ -44,7 +49,7 @@ exports.updateLocation = async (req, res) => {
         coordinates: [Number(lng), Number(lat)],
       },
     },
-    { new: true }
+    { new: true },
   );
 
   res.json(provider);
@@ -55,7 +60,7 @@ exports.updateServices = async (req, res) => {
   const provider = await Provider.findByIdAndUpdate(
     req.params.id,
     { services: req.body.services },
-    { new: true }
+    { new: true },
   );
 
   res.json(provider);
@@ -66,7 +71,7 @@ exports.submitKYC = async (req, res) => {
   const provider = await Provider.findByIdAndUpdate(
     req.params.id,
     { documents: req.body.documents },
-    { new: true }
+    { new: true },
   );
 
   res.json({ message: "KYC submitted", provider });

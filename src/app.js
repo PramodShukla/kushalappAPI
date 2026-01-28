@@ -7,6 +7,8 @@ const compression = require("compression");
 const providerRoutes = require("./routes/providerRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const subcategoryRoutes = require("./routes/subcategoryRoutes");
+const offerRoutes = require("./routes/offersroutes");
+const sliderRoutes = require("./routes/sliderRoutes");
 
 const errorHandler = require("./middlewares/errorHandler");
 
@@ -18,10 +20,14 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(compression());
 
+app.use("/uploads", express.static("uploads"));
+
 // Routes
 app.use("/api/providers", providerRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/subcategories", subcategoryRoutes);
+app.use("/api/offers", offerRoutes);
+app.use("/api/sliders", sliderRoutes);
 
 // Error handler
 app.use(errorHandler);

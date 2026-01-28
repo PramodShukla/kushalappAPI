@@ -7,13 +7,33 @@ const subCategorySchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
+    intro: {
+      type: String,
+      default: "",
+    },
+    description: {
+      type: String,
+      default: "",
+    },
 
+    icon: {
+      type: String,
+      default: "",
+    },
+    banner: {
+      type: String,
+      default: "",
+    },
+    sequence: {
+      type: Number,
+      default: 0,
+      index: true,
+    },
     isActive: {
       type: Boolean,
       default: true,
@@ -23,7 +43,7 @@ const subCategorySchema = new mongoose.Schema(
     timestamps: true,
     toJSON: { virtuals: true }, // ✅ REQUIRED
     toObject: { virtuals: true }, // ✅ REQUIRED
-  }
+  },
 );
 
 // 🔢 Virtual: Count of providers offering this subcategory

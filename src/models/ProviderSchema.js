@@ -10,18 +10,27 @@ const providerSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-
+    intro: {
+      type: String,
+      default: "",
+    },
+    labelText: {
+      type: String,
+      default: "",
+    },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
     },
 
     phone: {
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
 
     // -----------------------
@@ -74,13 +83,11 @@ const providerSchema = new mongoose.Schema(
       emailVerified: { type: Boolean, default: false },
       aadhaarVerified: { type: Boolean, default: false },
       panVerified: { type: Boolean, default: false },
-
-      // Final approval by admin/system
       userVerified: { type: Boolean, default: false },
     },
 
     // -----------------------
-    // Services (Category & SubCategory refs)
+    // Services
     // -----------------------
     services: [
       {
@@ -111,28 +118,27 @@ const providerSchema = new mongoose.Schema(
       default: 0,
     },
 
+    profilePic: {
+      type: String,
+      default: "",
+    },
+
     // -----------------------
-    // Status flags
+    // Status
     // -----------------------
     isActive: {
       type: Boolean,
       default: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // -----------------------
 // Indexes
 // -----------------------
 
-// For nearby search
+// Only keep this (not duplicated elsewhere)
 providerSchema.index({ location: "2dsphere" });
-
-// Ensure uniqueness (important in production)
-providerSchema.index({ email: 1 }, { unique: true });
-providerSchema.index({ phone: 1 }, { unique: true });
-providerSchema.index({ "documents.aadhaar": 1 }, { unique: true });
-providerSchema.index({ "documents.pan": 1 }, { unique: true });
 
 module.exports = mongoose.model("Provider", providerSchema);

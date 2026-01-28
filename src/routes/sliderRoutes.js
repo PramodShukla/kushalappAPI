@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { upload, processUploads } = require("../middlewares/upload");
-const controller = require("../controllers/categoryController");
+const controller = require("../controllers/sliderController");
 
 // Admin only
 router.post(
@@ -10,19 +10,19 @@ router.post(
     { name: "icon", maxCount: 1 },
     { name: "banner", maxCount: 1 },
   ]),
-  processUploads("category"),
-  controller.createCategory,
+  processUploads("slider"),
+  controller.createSlider,
 );
-router.get("/", controller.getCategories);
+router.get("/", controller.getSliders);
 router.put(
   "/:id",
   upload.fields([
     { name: "icon", maxCount: 1 },
     { name: "banner", maxCount: 1 },
   ]),
-  processUploads("category"),
-  controller.updateCategory,
+  processUploads("slider"),
+  controller.updateSlider,
 );
-router.delete("/:id", controller.deleteCategory);
+router.delete("/:id", controller.deleteSlider);
 
 module.exports = router;

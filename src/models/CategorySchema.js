@@ -8,17 +8,35 @@ const categorySchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    icon: String,
-    isActive: {
-      type: Boolean,
-      default: true,
+
+    intro: {
+      type: String,
+      default: "",
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+
+    icon: {
+      type: String,
+      default: "",
+    },
+    banner: {
+      type: String,
+      default: "",
+    },
+    sequence: {
+      type: Number,
+      default: 0,
+      index: true,
     },
   },
   {
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  }
+  },
 );
 
 // 🔢 Virtual: Count of subcategories

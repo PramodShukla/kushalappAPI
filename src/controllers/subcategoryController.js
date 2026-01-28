@@ -1,26 +1,36 @@
 const SubCategory = require("../models/SubCategorySchema");
+const fs = require("fs");
+const path = require("path");
 
 // Create
 exports.createSubCategory = async (req, res) => {
-  const sub = await SubCategory.create(req.body);
-  res.status(201).json(sub);
+  try {
+    const data = {
+      ...req.body,
+      ...req.savedFiles, // icon, banner, etc
+    };
+
+    const result = await SubCategory.create(data);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // Get all
 exports.getSubCategories = async (req, res) => {
-
-
-  try{
+  try {
     const data = await SubCategory.find()
-        .populate("category", "name")
-        .populate("providerCount")
-        .sort({ createdAt: -1 });
+      .populate("category", "name")
+      .populate("providerCount")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({ response: "successful", message: "", data: data });
-  }catch (error) {
-    res.status(500).json({ response: "fail", message: error.message, data: [] });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ response: "fail", message: error.message, data: [] });
   }
-
 };
 
 // Get by category
